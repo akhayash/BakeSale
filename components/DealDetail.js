@@ -1,12 +1,13 @@
 import React from 'react';
 import ProtoTypes from 'prop-types';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {priceDisplay} from './util';
 import ajax from './ajax';
 
 class DealDetail extends React.Component {
   static propTypes = {
     initialDealDate: ProtoTypes.object.isRequired,
+    onBack: ProtoTypes.func.isRequired,
   };
 
   state = {
@@ -22,7 +23,10 @@ class DealDetail extends React.Component {
   render() {
     const {deal} = this.state;
     return (
-      <View>
+      <View style={styles.detail}>
+        <TouchableOpacity onPress={this.props.onBack}>
+          <Text style={styles.backlink}>Back</Text>
+        </TouchableOpacity>
         <Image source={{uri: deal.media[0]}} style={styles.image} />
         <View style={styles.info}>
           <Text style={styles.title}>{deal.title}</Text>
@@ -38,7 +42,7 @@ class DealDetail extends React.Component {
           </View>
         )}
         <View>
-          <Text>{deal.description}</Text>
+          <Text style={styles.description}>{deal.description}</Text>
         </View>
       </View>
     );
@@ -50,9 +54,20 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     marginTop: 50,
   },
+  backlink: {
+    marginBottom: 5,
+    color: '#22f',
+  },
   image: {
     width: '100%',
     height: 150,
+  },
+  detail: {
+    borderColor: '#bbb',
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    margin: 10,
+    padding: 10,
   },
   info: {
     padding: 10,
@@ -79,6 +94,14 @@ const styles = StyleSheet.create({
   avatar: {
     height: 60,
     width: 60,
+    borderRadius: 30,
+  },
+  description: {
+    borderColor: '#ddd',
+    borderWidth: 1,
+    borderStyle: 'dotted',
+    margin: 10,
+    padding: 10,
   },
 });
 

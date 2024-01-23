@@ -22,12 +22,23 @@ class App extends React.Component {
     });
   };
 
+  unsetCurrentDeal = () => {
+    this.setState({
+      currentDealId: null,
+    });
+  };
+
   currentDeal = () => {
     return this.state.deals.find(deal => deal.key === this.state.currentDealId);
   };
   render() {
     if (this.state.currentDealId) {
-      return <DealDetail initialDealDate={this.currentDeal()} />;
+      return (
+        <DealDetail
+          initialDealDate={this.currentDeal()}
+          onBack={this.unsetCurrentDeal}
+        />
+      );
     }
     if (this.state.deals.length > 0) {
       return (

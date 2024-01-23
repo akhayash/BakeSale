@@ -3,11 +3,14 @@ import {View, Text, StyleSheet} from 'react-native';
 import ajax from './components/ajax'; // Import the fetchinitialDeals function
 import DealList from './components/DealList'; // Import the DealList component
 import DealDetail from './components/DealDetail'; // Import the DealDetail component
+import SearchBar from './components/SearchBar';
 
 class App extends React.Component {
   state = {
     deals: [],
+    dealsFormSearch: [],
     currentDealId: null,
+    activeSearchTerm: '',
   };
   async componentDidMount() {
     const deals = await ajax.fetchInitialDeals(); // Use the imported fetchinitialDeals function
@@ -15,6 +18,14 @@ class App extends React.Component {
       return {deals};
     });
   }
+
+  searchDeals = async searchTerm => {
+    let dealsFormSearch = [];
+    if (searchTerm) {
+      dealsFormSearch = await ajax.fetchDealsSearchResult(searchTerm);
+    }
+    this.setState({dealsFormSearch, activeSearchTerm: searchTerm});
+  };
 
   setCurrentDeal = dealId => {
     this.setState({
@@ -40,9 +51,21 @@ class App extends React.Component {
         />
       );
     }
-    if (this.state.deals.length > 0) {
+
+    const dealsToDisplay =
+      this.state.dealsFormSearch.length > 0
+        ? this.state.dealsFormSearch
+        : this.state.deals;
+
+    if (dealsToDisplay.length > 0) {
       return (
-        <DealList deals={this.state.deals} onItemPress={this.setCurrentDeal} />
+        <View style={styles.main}>
+          <SearchBar
+            searchDeals={this.searchDeals}
+            initialSearchTerm={this.state.activeSearchTerm}
+          />
+          <DealList deals={dealsToDisplay} onItemPress={this.setCurrentDeal} />
+        </View>
       );
     }
     return (
@@ -58,6 +81,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center', // main axis
     alignItems: 'center', // cross axis
+  },
+  main: {
+    marginTop: 30,
   },
   header: {
     fontSize: 40,

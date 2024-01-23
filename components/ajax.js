@@ -5,9 +5,18 @@ export default {
   async fetchInitialDeals() {
     // console.log('fetchInitialDeals called');
     try {
-      let response = await fetch(apiHost + '/api/deals');
+      const response = await fetch(apiHost + '/api/deals');
       // console.log('response: ', response);
-      let responseJson = await response.json();
+      const responseJson = await response.json();
+      return responseJson;
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  async fetchDealDetail(dealId) {
+    try {
+      const response = await fetch(apiHost + '/api/deals/' + dealId);
+      const responseJson = await response.json();
       return responseJson;
     } catch (error) {
       console.error(error);

@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Animated, Text, StyleSheet} from 'react-native';
+import {
+  View,
+  Animated,
+  Text,
+  Easing,
+  Dimensions,
+  StyleSheet,
+} from 'react-native';
 import ajax from './components/ajax'; // Import the fetchinitialDeals function
 import DealList from './components/DealList'; // Import the DealList component
 import DealDetail from './components/DealDetail'; // Import the DealDetail component
@@ -14,10 +21,16 @@ class App extends React.Component {
     activeSearchTerm: '',
   };
   animateTitle = (direction = 1) => {
-    Animated.spring(this.titleXpos, {
-      toValue: direction * 100,
-    }).start(() => {
-      this.animateTitle(-1 * direction);
+    const width = Dimensions.get('window').width - 150;
+    Animated.timing(this.titleXpos, {
+      toValue: direction * (width / 2),
+      duration: 1000,
+      easing: Easing.ease,
+      useNativeDriver: false, // Add This line
+    }).start(({finished}) => {
+      if (finished) {
+        this.animateTitle(-1 * direction);
+      }
     });
   };
   async componentDidMount() {

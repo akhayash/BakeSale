@@ -9,6 +9,8 @@ import {
   PanResponder,
   Animated,
   Dimensions,
+  Button,
+  Linking,
 } from 'react-native';
 import {priceDisplay} from './util';
 import ajax from './ajax';
@@ -72,6 +74,9 @@ class DealDetail extends React.Component {
     console.log(fullDeal);
     this.setState({deal: fullDeal});
   }
+  openDealUrl = () => {
+    Linking.openURL(this.state.deal.url);
+  };
 
   render() {
     const {deal} = this.state;
@@ -101,6 +106,7 @@ class DealDetail extends React.Component {
         <View>
           <Text style={styles.description}>{deal.description}</Text>
         </View>
+        <Button title="Buy this deal!!" onPress={this.openDealUrl} />
       </View>
     );
   }

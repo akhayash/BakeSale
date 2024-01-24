@@ -14,6 +14,7 @@ class SearchBar extends Component {
 
   searchDeals = searchTerm => {
     this.props.searchDeals(searchTerm);
+    this.inputElement.blur();
   };
 
   debouncedSearchDeals = debounce(this.searchDeals, 300);
@@ -26,6 +27,10 @@ class SearchBar extends Component {
   render() {
     return (
       <TextInput
+        ref={inputElement => {
+          this.inputElement = inputElement;
+        }}
+        value={this.state.searchTerm}
         style={styles.input}
         placeholder="Search All Deals"
         onChangeText={this.handleChange}

@@ -50,23 +50,15 @@ class DealDetail extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  deal: {
-    marginHorizontal: 12,
-  },
   backlink: {
     marginBottom: 5,
     color: '#22f',
+    marginLeft: 10,
   },
   image: {
     width: '100%',
     height: 150,
-  },
-  detail: {
-    borderColor: '#bbb',
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    margin: 10,
-    padding: 10,
+    backgroundColor: '#ccc',
   },
   info: {
     padding: 10,

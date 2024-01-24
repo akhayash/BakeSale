@@ -1,22 +1,31 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Animated, Text, StyleSheet} from 'react-native';
 import ajax from './components/ajax'; // Import the fetchinitialDeals function
 import DealList from './components/DealList'; // Import the DealList component
 import DealDetail from './components/DealDetail'; // Import the DealDetail component
 import SearchBar from './components/SearchBar';
 
 class App extends React.Component {
+  titleXpos = new Animated.Value(0);
   state = {
     deals: [],
     dealsFormSearch: [],
     currentDealId: null,
     activeSearchTerm: '',
   };
-  async componentDidMount() {
-    const deals = await ajax.fetchInitialDeals(); // Use the imported fetchinitialDeals function
-    this.setState(prevState => {
-      return {deals};
+  animateTitle = (direction = 1) => {
+    Animated.spring(this.titleXpos, {
+      toValue: direction * 100,
+    }).start(() => {
+      this.animateTitle(-1 * direction);
     });
+  };
+  async componentDidMount() {
+    this.animateTitle();
+    // const deals = await ajax.fetchInitialDeals(); // Use the imported fetchinitialDeals function
+    // this.setState(prevState => {
+    //   return {deals};
+    // });
   }
 
   searchDeals = async searchTerm => {
@@ -69,9 +78,9 @@ class App extends React.Component {
       );
     }
     return (
-      <View style={styles.container}>
+      <Animated.View style={[{left: this.titleXpos}, styles.container]}>
         <Text style={styles.header}>Bakesale</Text>
-      </View>
+      </Animated.View>
     );
   }
 }

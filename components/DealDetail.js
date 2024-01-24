@@ -1,10 +1,29 @@
 import React from 'react';
 import ProtoTypes from 'prop-types';
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  PanResponder,
+  Animated,
+} from 'react-native';
 import {priceDisplay} from './util';
 import ajax from './ajax';
 
 class DealDetail extends React.Component {
+  imagePanResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onPanResponderMove: (evt, gs) => {
+      // console.log(gs.dx);
+      console.log('Moving');
+      // this.imageXPos.setValue(gs.dx);
+    },
+    onPanResponderRelease: (evt, gs) => {
+      console.log('release');
+    },
+  });
   static propTypes = {
     initialDealDate: ProtoTypes.object.isRequired,
     onBack: ProtoTypes.func.isRequired,
@@ -12,6 +31,7 @@ class DealDetail extends React.Component {
 
   state = {
     deal: this.props.initialDealDate,
+    imageIndex: 0,
   };
 
   async componentDidMount() {
@@ -27,7 +47,11 @@ class DealDetail extends React.Component {
         <TouchableOpacity onPress={this.props.onBack}>
           <Text style={styles.backlink}>Back</Text>
         </TouchableOpacity>
-        <Image source={{uri: deal.media[0]}} style={styles.image} />
+        <Image
+          {...this.imagePanResponder.panHandlers}
+          source={{uri: deal.media[this.state.imageIndex]}}
+          style={styles.image}
+        />
         <View style={styles.info}>
           <Text style={styles.title}>{deal.title}</Text>
           <View style={styles.footer}>

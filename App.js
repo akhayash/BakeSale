@@ -35,10 +35,10 @@ class App extends React.Component {
   };
   async componentDidMount() {
     this.animateTitle();
-    // const deals = await ajax.fetchInitialDeals(); // Use the imported fetchinitialDeals function
-    // this.setState(prevState => {
-    //   return {deals};
-    // });
+    const deals = await ajax.fetchInitialDeals(); // Use the imported fetchinitialDeals function
+    this.setState(prevState => {
+      return {deals};
+    });
   }
 
   searchDeals = async searchTerm => {
